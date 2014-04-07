@@ -53,18 +53,34 @@ int Frames::findBiggestContour( vector< vector< Point > > contours ){
 
 Rect Frames::getBoundingRectOfBiggestContour( Mat input ) {
 
-    int indexOfBiggestContour;
-    vector< vector< Point > > contours;
-    vector< Vec4i > hierarchy;
+    int largest_area=0;
+    int largest_contour_index=0;
+    Rect bounding_rect;
+    vector<vector<Point> > contours; // Vector for storing contour
+    vector<Vec4i> hierarchy;
 
-    findContours( input, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );
-    indexOfBiggestContour = findBiggestContour( contours );
+    findContours( input, contours, hierarchy,CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );
+    //~ // iterate through each contour.
+    for( int i = 0; i< contours.size(); i++ )
+    {
+        //  Find the area of contour
+        double a=contourArea( contours[i],false);
+
+        if(a>largest_area){
+            largest_area=a;
+            // Store the index of largest contour
+            largest_contour_index=i;
+            // Find the bounding rectangle for biggest contour
+            bounding_rect=boundingRect(contours[i]);
+        }
+    }
 
     Scalar color( 255,255,255);  // color of the contour in the
     //Draw the contour and rectangle
-    drawContours( input, contours,indexOfBiggestContour, color, CV_FILLED,8,hierarchy);
+    drawContours( input, contours,largest_contour_index, color, CV_FILLED,8,hierarchy);
 
-    return boundingRect( contours[indexOfBiggestContour] );
+    return bounding_rect;
+
 
 }
 
