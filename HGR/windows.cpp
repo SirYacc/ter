@@ -1,0 +1,123 @@
+#include "windows.h"
+
+using namespace std;
+using namespace cv;
+
+Windows::Windows()
+{
+}
+
+int Windows::runLearn(string filePath){
+    ofstream file(filePath.c_str(), ios::out | ios::trunc);
+
+    if(!file){
+        cerr << "Impossible d'ouvrir le fichier !" << endl;
+        exit(0);
+    }
+
+    VideoCapture capture;
+    capture.open(0);
+
+    //set height and width of capture frame
+    capture.set(CV_CAP_PROP_FRAME_WIDTH,320);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+
+    Mat cameraFeed;
+    Mat skinMat;
+    Mat fullHand;
+
+    int nbRegionByLine = 10;
+    int cptFrames = 0;
+    int nbImg = 0;
+    int starter = 0;
+
+
+    while(1){
+        //store image to matrix
+        capture.read(cameraFeed);
+
+        //show the current image
+        imshow("Original Image",cameraFeed);
+
+        skinMat= frames.getSkin(cameraFeed);
+
+        // Creation des .txt
+        //on prend une photo toute les 10 frames
+
+        fullHand = frames.getFullHand(skinMat);
+
+        if(starter >= 100){
+            if(cptFrames == 10){
+                file  << frames.getFormatedSVM(fullHand,nbRegionByLine) << endl;
+                cptFrames = 0;
+                cout << nbImg++ << endl;
+            }
+            else cptFrames++;
+        }
+        else cout << " " <<starter ++;
+
+
+        imshow("Full hand",fullHand);
+        imshow("Skin Image",skinMat);
+
+        int c = waitKey(10);
+        if( (char)c == 'c' || nbImg >= 300)
+            break;
+    }
+    file.close();
+    return 0;
+}
+
+
+int Windows::runPredict(HGRSVM svm, string file){
+
+    VideoCapture capture;
+    //open capture object at location zero (default location for webcam)
+
+    capture.open(0);
+
+    //set height and width of capture frame
+    capture.set(CV_CAP_PROP_FRAME_WIDTH,320);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+
+    Mat cameraFeed;
+    Mat skinMat;
+    Mat fullHand;
+    Mat dataMat;
+
+    int nbRegionByLine = 10;
+    string line;
+    CvSVM cvSvm;
+    cvSvm.load(file.c_str());
+     while(1){
+        //store image to matrix
+        capture.read(cameraFeed);
+
+        //show the current image
+        imshow("Original Image",cameraFeed);
+
+        skinMat= frames.getSkin(cameraFeed);
+        fullHand = frames.getFullHand(skinMat);
+
+        line = frames.getFormatedSVM( fullHand, nbRegionByLine );
+
+       // dataMat = svm.createPredictedData( line, nbRegionByLine );
+
+
+       // cout << "Thumb  : " << cvSvm.predict( dataMat ) << endl;
+        cout << "Thumb  : " << svm.createPredictedData( line, nbRegionByLine ) << endl;
+
+        imshow("Full hand",fullHand);
+        imshow("Skin Image",skinMat);
+
+        int c = waitKey(10);
+        if( (char)c == 'c')
+            break;
+    }
+    return 0;
+}
+
+
+Windows::~Windows(){
+
+}

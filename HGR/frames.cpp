@@ -1,0 +1,173 @@
+#include "frames.h"
+
+using namespace std;
+using namespace cv;
+
+Frames::Frames(void)
+{
+    Y_MIN  = 0;
+    Y_MAX  = 255;
+    Cr_MIN = 133;
+    Cr_MAX = 183;
+    Cb_MIN = 77;
+    Cb_MAX = 147;
+}
+
+Mat Frames::getSkin( Mat input ) {
+
+    Mat skin;
+
+    cvtColor( input, skin, COLOR_BGR2YCrCb );
+
+    inRange( skin, Scalar( Y_MIN, Cr_MIN, Cb_MIN ), Scalar( Y_MAX, Cr_MAX, Cb_MAX ), skin );
+
+    Mat Kernel( Size(2, 2), CV_8UC1 );
+    Kernel.setTo( Scalar(3) );
+
+    erode( skin, skin, Kernel );
+
+    Kernel.setTo( Scalar(1) );
+    dilate( skin, skin, Kernel );
+
+    blur( skin, skin, Size(10,10) );
+
+    threshold( skin, skin, 200, 255, THRESH_BINARY );
+
+    return skin;
+}
+
+int Frames::findBiggestContour( vector< vector< Point > > contours ){
+
+    int indexOfBiggestContour = -1;
+    unsigned int sizeOfBiggestContour = 0;
+
+    for (unsigned int i = 0; i < contours.size(); i++){
+        if(contours[i].size() > sizeOfBiggestContour){
+            sizeOfBiggestContour = contours[i].size();
+            indexOfBiggestContour = i;
+        }
+    }
+
+    return indexOfBiggestContour;
+}
+
+Rect Frames::getBoundingRectOfBiggestContour( Mat input ) {
+
+    int indexOfBiggestContour;
+    vector< vector< Point > > contours;
+    vector< Vec4i > hierarchy;
+
+    findContours( input, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );
+    indexOfBiggestContour = findBiggestContour( contours );
+
+    Scalar color( 255,255,255);  // color of the contour in the
+    //Draw the contour and rectangle
+    drawContours( input, contours,indexOfBiggestContour, color, CV_FILLED,8,hierarchy);
+
+    return boundingRect( contours[indexOfBiggestContour] );
+
+}
+
+void Frames::resizeRect( Rect *rect ){
+
+    if(rect->width < rect->height){
+        rect->x -= (rect->height - rect->width)/2;
+        rect->width = rect->height;
+    }
+    else if(rect->height < rect->width){
+        rect->y -= (rect->width - rect->height)/2;
+        rect->height = rect->width;
+    }
+
+    rect->x -= 10;
+    rect->width += 20;
+
+    rect->y -= 10;
+    rect->height += 20;
+}
+
+Mat Frames::getFullHand( Mat input ) {
+
+    Mat hand = Mat::zeros( Size(300,300), CV_8UC1 );
+    Rect bounding_rect;
+
+    bounding_rect = getBoundingRectOfBiggestContour( input );
+
+    resizeRect( &bounding_rect );
+
+    if(!(bounding_rect.x + bounding_rect.width > input.cols) &&
+            !(bounding_rect.y + bounding_rect.height > input.rows) &&
+            bounding_rect.x > 0 && bounding_rect.y > 0)
+        hand = input( bounding_rect );
+
+    resize( hand, hand, Size(300,300), 0, 0, INTER_LINEAR );
+
+    return hand;
+}
+
+//Point( y, x )
+Mat Frames::divideFrameIntoSquares( Mat frame, int gridWidthInPixel ) {
+
+    int width = frame.cols;
+    int height = frame.rows;
+
+    for (int i = gridWidthInPixel ; i < width ; i += gridWidthInPixel) {
+        line( frame, Point( i, 0 ), Point( i, height ), Scalar( 255, 0, 0 ) );
+        line( frame, Point( 0, i ), Point( width, i ) , Scalar( 255, 0, 0 ) );
+    }
+
+    return frame;
+}
+
+String Frames::convertToString( bool *tab, int size ) {
+
+    ostringstream oss;
+
+    for (int k = 0 ; k < size ; k++)
+        oss << tab[k];
+
+    return oss.str();
+}
+
+String Frames::getFormatedSVM( Mat frame, int nbRegionByLine ) {
+
+    int nbRegions = nbRegionByLine*nbRegionByLine;
+    int nbPixels = frame.cols / nbRegionByLine;
+
+    bool reg[nbRegions];
+    bool white = false;
+    int r, k, j;
+
+    for (r = 0 ; r <= nbRegions ; r++) {
+        white = false;
+        for (k = (r%nbRegionByLine)*nbPixels ; k < (r%nbRegionByLine)*nbPixels + nbPixels ; k++) {
+            for (j = (r/nbRegionByLine)*nbPixels ; j < (r/nbRegionByLine)*nbPixels + nbPixels ; j++){
+                if(frame.at<uchar>(j,k) == 255){
+                    white = true;
+                    break;
+                }
+            }
+            if (white)
+                break;
+        }
+        reg[r] = white;
+    }
+
+    return convertToString( reg, nbRegions );
+}
+
+void Frames::printTabOfRegion( bool *tab, int size, int nbCellByLine ) {
+
+    cout << tab[0];
+    for(int k = 1; k < size; k++) {
+        if (k % nbCellByLine == 0)
+            cout << "" << endl << tab[k];
+        else
+            cout << " - " << tab[k];
+    }
+    cout << "" << endl << "fin" << endl;
+}
+
+ Frames::~Frames(){
+
+}
