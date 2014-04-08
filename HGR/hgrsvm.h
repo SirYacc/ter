@@ -21,8 +21,7 @@ private :
 public:
     HGRSVM();
 
-    void fillTab ( int nb, string pathFile, float label, float trainingData[][100], float labels[] );
-
+    void fillTab ( int nb, string pathFile, int label, float **trainingData, float *labels );
     void train( int nbRegionByLine, int nbFrame, int nbRegion );
 
     float createPredictedData( string line, int nbRegionByLine) ;

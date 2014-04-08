@@ -6,7 +6,7 @@ HGRSVM::HGRSVM()
 {
 }
 
-void HGRSVM::fillTab ( int nb, string pathFile, float label, float trainingData[][100], float labels[] ) {
+void HGRSVM::fillTab ( int nb, string pathFile, int label, float **trainingData, float *labels ) {
 
     int nbNewLine = 0;
     ifstream fichier( pathFile.c_str(), ios::in );
@@ -32,11 +32,20 @@ void HGRSVM::fillTab ( int nb, string pathFile, float label, float trainingData[
     fichier.close();
 }
 
+
+
+
+
+
+
+
 void HGRSVM::train( int nbRegionByLine, int nbFrame, int nbRegion ) {
 
-    float trainingData[nbFrame][100];
+    float **trainingData = new float*[nbFrame];
+    for (int i = 0 ; i < nbFrame ; i++)
+        trainingData[i] = new float[nbRegion];
     float labels[nbFrame];
-   // fillTables();
+    // fillTables();
 
     fillTab ( 0, "../res/label0.txt", 0.0, trainingData, labels );
     fillTab ( nbFrame/5, "../res/label1.txt", 1.0, trainingData, labels );
