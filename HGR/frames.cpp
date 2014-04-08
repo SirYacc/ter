@@ -11,6 +11,21 @@ Frames::Frames(void)
     Cr_MAX = 183;
     Cb_MIN = 77;
     Cb_MAX = 147;
+
+//    Y_MIN  = 0;
+//    Y_MAX  = 255;
+//    Cr_MIN = 135;
+//    Cr_MAX = 180;
+//    Cb_MIN = 85;
+//    Cb_MAX = 135;
+
+//    Y_MIN  = 0;
+//    Y_MAX  = 255;
+//    Cr_MIN = 133;
+//    Cr_MAX = 173;
+//    Cb_MIN = 77;
+//    Cb_MAX = 127;
+
 }
 
 Mat Frames::getSkin( Mat input ) {
@@ -116,8 +131,9 @@ Mat Frames::getFullHand( Mat input ) {
             bounding_rect.x > 0 && bounding_rect.y > 0)
         hand = input( bounding_rect );
 
-    resize( hand, hand, Size(300,300), 0, 0, INTER_LINEAR );
+    resize( hand, hand, Size(300,300), 0, 0, INTER_LANCZOS4 );
 
+    rectangle(input,bounding_rect,Scalar(255,255,255));
     return hand;
 }
 

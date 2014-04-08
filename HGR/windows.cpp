@@ -89,12 +89,22 @@ int Windows::runPredict(HGRSVM svm, string file){
     string line;
     CvSVM cvSvm;
     cvSvm.load(file.c_str());
+
+    string fullHandImg = "Full hand";
+    namedWindow( fullHandImg, CV_WINDOW_AUTOSIZE );
+    moveWindow(fullHandImg,1200,200);
+
+    string skinImg = "Skin Image";
+    namedWindow( skinImg, CV_WINDOW_AUTOSIZE );
+    moveWindow(skinImg,500,200);
+
+
      while(1){
         //store image to matrix
         capture.read(cameraFeed);
 
         //show the current image
-        imshow("Original Image",cameraFeed);
+        //imshow("Original Image",cameraFeed);
 
         skinMat= frames.getSkin(cameraFeed);
         fullHand = frames.getFullHand(skinMat);
@@ -107,8 +117,12 @@ int Windows::runPredict(HGRSVM svm, string file){
        // cout << "Thumb  : " << cvSvm.predict( dataMat ) << endl;
         cout << "Thumb  : " << svm.createPredictedData( line, nbRegionByLine ) << endl;
 
-        imshow("Full hand",fullHand);
-        imshow("Skin Image",skinMat);
+
+
+        imshow(fullHandImg , fullHand);
+        imshow(skinImg , skinMat);
+
+
 
         int c = waitKey(10);
         if( (char)c == 'c')
