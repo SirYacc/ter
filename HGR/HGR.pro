@@ -21,7 +21,16 @@ INCLUDEPATH += /usr/local/include/opencv            \
                ../ARDroneLib/Soft/Lib/ardrone_tool/ \
                ../ARDroneLib/Soft/Common/           \
                ../ARDroneLib/VP_SDK/                \
-               ../ARDroneLib/VP_SDK/VP_Os/linux/
+               ../ARDroneLib/VP_SDK/VP_Os/linux/    \
+                /usr/include/gtk-2.0 \
+                /usr/lib/x86_64-linux-gnu/gtk-2.0/include \
+                /usr/include/atk-1.0 \/usr/include/cairo \
+                /usr/include/gdk-pixbuf-2.0 \/usr/include/pango-1.0 \
+                /usr/include/gio-unix-2.0/ \/usr/include/glib-2.0 \
+                /usr/lib/x86_64-linux-gnu/glib-2.0/include \
+                /usr/include/pixman-1 \/usr/include/freetype2 \
+                /usr/include/libpng12
+
 
 QMAKE_CXXFLAGS += \
             -pthread    \
@@ -29,7 +38,8 @@ QMAKE_CXXFLAGS += \
             -D__LINUX__ \
             -std=c++0x
 
-LIBS += `pkg-config --libs opencv gtk+-2.0` \
+
+LIBS += `pkg-config --libs opencv gtk+-2.0 glib-2.0` \
         -lpc_ardrone                        \
         -lrt                                \
         -pthread

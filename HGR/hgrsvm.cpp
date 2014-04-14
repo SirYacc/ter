@@ -6,7 +6,7 @@ HGRSVM::HGRSVM()
 {
 }
 
-void HGRSVM::fillTab ( int nb, string pathFile, int label, float **trainingData, float *labels ) {
+void HGRSVM::fillTab ( int nb, string pathFile, float label, float trainingData[][100], float labels[] ) {
 
     int nbNewLine = 0;
     ifstream fichier( pathFile.c_str(), ios::in );
@@ -41,9 +41,10 @@ void HGRSVM::fillTab ( int nb, string pathFile, int label, float **trainingData,
 
 void HGRSVM::train( int nbRegionByLine, int nbFrame, int nbRegion ) {
 
-    float **trainingData = new float*[nbFrame];
-    for (int i = 0 ; i < nbFrame ; i++)
-        trainingData[i] = new float[nbRegion];
+//    float **trainingData = new float*[nbFrame];
+//    for (int i = 0 ; i < nbFrame ; i++)
+//        trainingData[i] = new float[nbRegion];
+     float trainingData[nbFrame][100];
     float labels[nbFrame];
     // fillTables();
 
@@ -88,7 +89,6 @@ float HGRSVM::createPredictedData( string line, int nbRegionByLine) {
         data[0][i] = line.at(i) - 48 ;
 
     Mat dataMat( 1, nbRegion, CV_32FC1, data );
-
 
     return cvSvm.predict(dataMat);
 }
