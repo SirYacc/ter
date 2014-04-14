@@ -132,7 +132,8 @@ int Windows::runPredict(HGRSVM svm, string file){
 
 
        // cout << "Thumb  : " << cvSvm.predict( dataMat ) << endl;
-        cout << "Thumb  : " << svm.createPredictedData( line, nbRegionByLine ) << endl;
+        order = svm.createPredictedData( line, nbRegionByLine );
+        cout << "Thumb  : " << order << endl;
 
 
 

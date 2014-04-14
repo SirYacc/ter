@@ -17,11 +17,15 @@
 
 // Self header file
 #include "display_stage.h"
+
 // GTK/Cairo headers
 #include <cairo.h>
 #include <gtk/gtk.h>
 
-extern int oder;
+// ArDrone Commands
+#include <ardrone_tool/UI/ardrone_input.h>
+
+extern int order;
 extern IplImage *imgFromKarmen;
 
 // Funcs pointer definition
@@ -192,7 +196,16 @@ C_RESULT display_stage_transform (display_stage_cfg_t *cfg, vp_api_io_data_t *in
     (void)cfg;
     (void)out;
 
-    IplImage *img = ipl_image_from_data((uint8_t*)in->buffers[0], 1, 640, 360);
+    imgFromKarmen = ipl_image_from_data((uint8_t*)in->buffers[0], 1, 640, 360);
+
+    switch (order) {
+    case 0 : ardrone_tool_set_ui_pad_start( 1 );    // Take-off
+        break;
+    case 1 : ardrone_tool_set_ui_pad_start( 0 );    // Land
+        break;
+    default : break;
+    }
+
 //    cvNamedWindow("video", CV_WINDOW_AUTOSIZE);
 //    cvShowImage("video", img);
 //    cvWaitKey(1);
