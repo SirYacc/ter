@@ -18,21 +18,17 @@ INCLUDEPATH += /usr/local/include/opencv            \
                /usr/include/freetype2               \
                /usr/include/directfb                \
                /usr/include/libpng12                \
+               /usr/lib/x86_64-linux-gnu/gtk-2.0/include \
+               /usr/include/gdk-pixbuf-2.0 \
+               /usr/lib/x86_64-linux-gnu/glib-2.0/include \
                ../ARDroneLib/                       \
                ../ARDroneLib/Soft/Lib/              \
                ../ARDroneLib/Soft/Lib/ardrone_tool/ \
                ../ARDroneLib/Soft/Common/           \
                ../ARDroneLib/VP_SDK/                \
                ../ARDroneLib/VP_SDK/VP_Os/linux/    \
-                ../ARDroneLib/FFMPEG/Includes/ \
-                /usr/include/gtk-2.0 \
-                /usr/lib/x86_64-linux-gnu/gtk-2.0/include \
-                /usr/include/atk-1.0 \/usr/include/cairo \
-                /usr/include/gdk-pixbuf-2.0 \/usr/include/pango-1.0 \
-                /usr/include/gio-unix-2.0/ \/usr/include/glib-2.0 \
-                /usr/lib/x86_64-linux-gnu/glib-2.0/include \
-                /usr/include/pixman-1 \/usr/include/freetype2 \
-                /usr/include/libpng12
+               ../ARDroneLib/FFMPEG/Includes/
+
 
 
 QMAKE_CXXFLAGS += \
