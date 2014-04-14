@@ -41,6 +41,7 @@ void HGRSVM::fillTab ( int nb, string pathFile, float label, float trainingData[
 
 void HGRSVM::train( int nbRegionByLine, int nbFrame, int nbRegion ) {
 
+    (void)nbRegion;
 //    float **trainingData = new float*[nbFrame];
 //    for (int i = 0 ; i < nbFrame ; i++)
 //        trainingData[i] = new float[nbRegion];
