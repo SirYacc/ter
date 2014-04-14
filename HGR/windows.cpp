@@ -109,7 +109,7 @@ int Windows::runPredict(HGRSVM svm, string file){
 
         if(cptLoop == 0){
             cout << " En attente du drone ..." << endl;
-            cptLoop = 9000000000;
+            cptLoop = 900000000;
         }
         else cptLoop --;
 
