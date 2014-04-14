@@ -199,50 +199,21 @@ C_RESULT display_stage_transform (display_stage_cfg_t *cfg, vp_api_io_data_t *in
     imgFromKarmen = ipl_image_from_data((uint8_t*)in->buffers[0], 1, 640, 360);
 
     switch (order) {
-    case 0 : ardrone_tool_set_ui_pad_start( 1 );    // Take-off
+    case 0 :
+        printf ("Take off\n");
+        //ardrone_tool_set_ui_pad_start( 1 );    // Take-off
         break;
-    case 1 : ardrone_tool_set_ui_pad_start( 0 );    // Land
+    case 1 :
+        printf ("Land\n");
+        //ardrone_tool_set_ui_pad_start( 0 );    // Land
         break;
-    default : break;
+    default :
+        break;
     }
 
 //    cvNamedWindow("video", CV_WINDOW_AUTOSIZE);
 //    cvShowImage("video", img);
 //    cvWaitKey(1);
-
-
-    //TODO envoyer order ici
-
-
-    // We can ignore the rest because we want the output in OpenCV anyway.
-
-    /*
-    // Process only if we are using RGB565
-    if (FALSE == cfg->paramsOK)
-    {
-        return C_OK;
-    }
-    // Realloc frameBuffer if needed
-    if (in->size != cfg->fbSize)
-    {
-        cfg->frameBuffer = vp_os_realloc (cfg->frameBuffer, in->size);
-        cfg->fbSize = in->size;
-    }
-
-    // Copy last frame to frameBuffer
-    vp_os_memcpy (cfg->frameBuffer, in->buffers[in->indexBuffer], cfg->fbSize);
-
-    // Ask GTK to redraw the window
-    uint32_t width = 0, height = 0;
-    getPicSizeFromBufferSize (in->size, &width, &height);
-    if (TRUE == gtkRunning)
-    {
-        gtk_widget_queue_draw_area (cfg->widget, 0, 0, width, height);
-    }
-
-    // Tell the pipeline that we don't have any output
-    out->size = 0;
-    */
 
     return C_OK;
 }
@@ -254,15 +225,15 @@ IplImage *ipl_image_from_data(uint8_t* data, int reduced_image, int width, int h
   IplImage *currframe;
   IplImage *dst;
 
-  currframe = cvCreateImage(cvSize(width,height), IPL_DEPTH_8U, 3);
-  dst = cvCreateImage(cvSize(width,height), IPL_DEPTH_8U, 3);
+  currframe = cvCreateImage( cvSize( width, height ), IPL_DEPTH_8U, 3 );
+  dst = cvCreateImage( cvSize( width, height ), IPL_DEPTH_8U, 3 );
 
   //currframe->widthStep = width * 3;
   currframe->imageData = data;
-  cvCvtColor(currframe, dst, CV_BGR2YCrCb);
-  cvReleaseImage(&currframe);
-  
-  cvThreshold(dst, dst, 200, 255, CV_THRESH_BINARY );
+  cvCvtColor( currframe, dst, CV_BGR2YCrCb );
+  cvReleaseImage( &currframe );
+  cvThreshold( dst, dst, 200, 255, CV_THRESH_BINARY );
+
   return dst;
 }
 

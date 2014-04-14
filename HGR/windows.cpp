@@ -143,8 +143,10 @@ int Windows::runPredict(HGRSVM svm, string file){
 
 
         int c = waitKey(10);
-        if( (char)c == 'c')
+        if( (char)c == 'c') {
+            order = 1; // Land
             break;
+        }
     }
     return 0;
 }

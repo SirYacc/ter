@@ -23,20 +23,16 @@ void print_block (int n, char c) {
 
 int main(int argc, char *argv[])
 {
-    thread th1 (runArdrone,argc,argv);
-
-    //runArdrone(argc, argv);
+    thread th1( runArdrone, argc, argv );
 
     //pour apprendre : lancer win.runLearn(), puis svm.train()
 
     HGRSVM svm;
-    svm.train(10,1800,100);
+    svm.train( 10, 1800, 100 );
     Windows win;
-    win.runPredict(svm, "model.txt");
+    win.runPredict( svm, "model.txt" );
 
     th1.join();
-    //th2.join();
 
     return 0;
 }
-
