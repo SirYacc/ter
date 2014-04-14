@@ -3,6 +3,8 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
+DEFINES += FFMPEG_SUPPORT
+
 INCLUDEPATH += /usr/local/include/opencv            \
                /usr/include/gtk-2.0                 \
                /usr/lib/gtk-2.0/include             \
@@ -22,6 +24,7 @@ INCLUDEPATH += /usr/local/include/opencv            \
                ../ARDroneLib/Soft/Common/           \
                ../ARDroneLib/VP_SDK/                \
                ../ARDroneLib/VP_SDK/VP_Os/linux/    \
+                ../ARDroneLib/FFMPEG/Includes/ \
                 /usr/include/gtk-2.0 \
                 /usr/lib/x86_64-linux-gnu/gtk-2.0/include \
                 /usr/include/atk-1.0 \/usr/include/cairo \
