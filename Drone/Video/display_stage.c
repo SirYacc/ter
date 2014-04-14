@@ -21,6 +21,9 @@
 #include <cairo.h>
 #include <gtk/gtk.h>
 
+extern int oder;
+extern IplImage *imgFromKarmen;
+
 // Funcs pointer definition
 const vp_api_stage_funcs_t display_stage_funcs = {
     NULL,
@@ -190,9 +193,13 @@ C_RESULT display_stage_transform (display_stage_cfg_t *cfg, vp_api_io_data_t *in
     (void)out;
 
     IplImage *img = ipl_image_from_data((uint8_t*)in->buffers[0], 1, 640, 360);
-    cvNamedWindow("video", CV_WINDOW_AUTOSIZE);
-    cvShowImage("video", img);
-    cvWaitKey(1);
+//    cvNamedWindow("video", CV_WINDOW_AUTOSIZE);
+//    cvShowImage("video", img);
+//    cvWaitKey(1);
+
+
+    //TODO envoyer order ici
+
 
     // We can ignore the rest because we want the output in OpenCV anyway.
 

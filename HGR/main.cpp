@@ -10,6 +10,8 @@ using namespace std;
 using namespace cv;
 
 mutex mtx;
+int order = -1;
+IplImage *imgFromKarmen;
 
 void print_block (int n, char c) {
   // critical section (exclusive access to std::cout signaled by lifetime of lck):
@@ -28,7 +30,7 @@ int main(int argc, char *argv[])
     //pour apprendre : lancer win.runLearn(), puis svm.train()
 
     HGRSVM svm;
-    svm.train(10,1500,100);
+    svm.train(10,1800,100);
     Windows win;
     win.runPredict(svm, "model.txt");
 

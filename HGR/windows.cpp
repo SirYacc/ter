@@ -3,6 +3,9 @@
 using namespace std;
 using namespace cv;
 
+extern int order;
+extern IplImage *imgFromKarmen;
+
 Windows::Windows()
 {
 }
@@ -33,6 +36,7 @@ int Windows::runLearn(string filePath){
 
 
     while(1){
+
         //store image to matrix
         capture.read(cameraFeed);
 
@@ -81,9 +85,11 @@ int Windows::runPredict(HGRSVM svm, string file){
     capture.set(CV_CAP_PROP_FRAME_HEIGHT,480);
 
     Mat cameraFeed;
+
+    Mat karmenMat = Mat(imgFromKarmen);
+
     Mat skinMat;
     Mat fullHand;
-    Mat dataMat;
 
     int nbRegionByLine = 10;
     string line;
@@ -98,15 +104,26 @@ int Windows::runPredict(HGRSVM svm, string file){
     namedWindow( skinImg, CV_WINDOW_AUTOSIZE );
     moveWindow(skinImg,500,200);
 
+    int cptLoop = 0;
+    while(karmenMat.dims == 0){
+
+        if(cptLoop == 0){
+            cout << " En attente du drone ..." << endl;
+            cptLoop = 9000000000;
+        }
+        else cptLoop --;
+
+    }
 
      while(1){
+
         //store image to matrix
         capture.read(cameraFeed);
 
         //show the current image
         //imshow("Original Image",cameraFeed);
 
-        skinMat= frames.getSkin(cameraFeed);
+        skinMat= frames.getSkin(karmenMat);
         fullHand = frames.getFullHand(skinMat);
 
         line = frames.getFormatedSVM( fullHand, nbRegionByLine );
