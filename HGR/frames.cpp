@@ -76,7 +76,7 @@ Rect Frames::getBoundingRectOfBiggestContour( Mat input ) {
 
     findContours( input, contours, hierarchy,CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );
     //~ // iterate through each contour.
-    for( int i = 0; i< contours.size(); i++ )
+    for( unsigned int i = 0; i< contours.size(); i++ )
     {
         //  Find the area of contour
         double a=contourArea( contours[i],false);
