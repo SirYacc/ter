@@ -201,20 +201,26 @@ C_RESULT display_stage_transform (display_stage_cfg_t *cfg, vp_api_io_data_t *in
     switch (order) {
     case 0 :
         printf ("Take off\n");
-        //ardrone_tool_set_ui_pad_start( 1 );    // Take-off
+        ardrone_tool_set_ui_pad_start( 1 );    // Take-off
         break;
     case 1 :
         printf ("Land\n");
-        //ardrone_tool_set_ui_pad_start( 0 );    // Land
+        ardrone_tool_set_ui_pad_start( 0 );    // Land
+        break;
+    case 2 :
+        printf("Left\n");
+        break;
+    case 3 :
+        printf("Right\n");
         break;
     default :
         printf("order = %d\n",order);
         break;
     }
 
-//    cvNamedWindow("video", CV_WINDOW_AUTOSIZE);
-//    cvShowImage("video", img);
-//    cvWaitKey(1);
+    //    cvNamedWindow("video", CV_WINDOW_AUTOSIZE);
+    //    cvShowImage("video", img);
+    //    cvWaitKey(1);
 
     return C_OK;
 }
@@ -223,18 +229,18 @@ IplImage *ipl_image_from_data(uint8_t* data, int reduced_image, int width, int h
 {
     (void)reduced_image;
 
-  IplImage *currframe;
-  IplImage *dst;
+    IplImage *currframe;
+    IplImage *dst;
 
-  currframe = cvCreateImage( cvSize( width, height ), IPL_DEPTH_8U, 3 );
-  dst = cvCreateImage( cvSize( width, height ), IPL_DEPTH_8U, 3 );
+    currframe = cvCreateImage( cvSize( width, height ), IPL_DEPTH_8U, 3 );
+    dst = cvCreateImage( cvSize( width, height ), IPL_DEPTH_8U, 3 );
 
-  //currframe->widthStep = width * 3;
-  currframe->imageData = data;
-  cvCvtColor( currframe, dst, CV_BGR2RGB );
-  cvReleaseImage( &currframe );
+    //currframe->widthStep = width * 3;
+    currframe->imageData = data;
+    cvCvtColor( currframe, dst, CV_BGR2RGB );
+    cvReleaseImage( &currframe );
 
-  return dst;
+    return dst;
 }
 
 
