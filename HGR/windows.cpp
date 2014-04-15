@@ -73,7 +73,7 @@ int Windows::runLearn(string filePath){
 }
 
 
-int Windows::runPredict(HGRSVM svm, string file){
+int Windows::runPredictD(HGRSVM svm, string file){
 
     VideoCapture capture;
     //open capture object at location zero (default location for webcam)
@@ -106,7 +106,7 @@ int Windows::runPredict(HGRSVM svm, string file){
 
     int cptLoop = 0;
     while(karmenMat.dims == 0){
-
+        karmenMat = Mat(imgFromKarmen);
         if(cptLoop == 0){
             cout << " En attente du drone ..." << endl;
             cptLoop = 900000000;
@@ -115,10 +115,12 @@ int Windows::runPredict(HGRSVM svm, string file){
 
     }
 
-     while(1){
+    while(1){
+
+        karmenMat = Mat(imgFromKarmen);
 
         //store image to matrix
-        capture.read(cameraFeed);
+        // capture.read(cameraFeed);
 
         //show the current image
         //imshow("Original Image",cameraFeed);
@@ -128,12 +130,80 @@ int Windows::runPredict(HGRSVM svm, string file){
 
         line = frames.getFormatedSVM( fullHand, nbRegionByLine );
 
-       // dataMat = svm.createPredictedData( line, nbRegionByLine );
+        // dataMat = svm.createPredictedData( line, nbRegionByLine );
 
 
-       // cout << "Thumb  : " << cvSvm.predict( dataMat ) << endl;
-        order = svm.createPredictedData( line, nbRegionByLine );
-        cout << "Thumb  : " << order << endl;
+        // cout << "Thumb  : " << cvSvm.predict( dataMat ) << endl;
+        order = (int)svm.createPredictedData( line, nbRegionByLine );
+        //cout << "Thumb  : " << order << endl;
+
+
+
+        imshow(fullHandImg , fullHand);
+        imshow(skinImg , skinMat);
+
+
+
+        int c = waitKey(10);
+        if( (char)c == 'c') {
+            order = 1; // Land
+            break;
+        }
+    }
+    return 0;
+}
+
+
+int Windows::runPredictC(HGRSVM svm, string file){
+
+    VideoCapture capture;
+    //open capture object at location zero (default location for webcam)
+
+    capture.open(0);
+
+    //set height and width of capture frame
+    capture.set(CV_CAP_PROP_FRAME_WIDTH,320);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+
+    Mat cameraFeed;
+
+    Mat skinMat;
+    Mat fullHand;
+
+    int nbRegionByLine = 10;
+    string line;
+    CvSVM cvSvm;
+    cvSvm.load(file.c_str());
+
+    string fullHandImg = "Full hand";
+    namedWindow( fullHandImg, CV_WINDOW_AUTOSIZE );
+    moveWindow(fullHandImg,1200,200);
+
+    string skinImg = "Skin Image";
+    namedWindow( skinImg, CV_WINDOW_AUTOSIZE );
+    moveWindow(skinImg,500,200);
+
+
+
+    while(1){
+
+        //store image to matrix
+        capture.read(cameraFeed);
+
+        //show the current image
+        //imshow("Original Image",cameraFeed);
+
+        skinMat= frames.getSkin(cameraFeed);
+        fullHand = frames.getFullHand(skinMat);
+
+        line = frames.getFormatedSVM( fullHand, nbRegionByLine );
+
+        // dataMat = svm.createPredictedData( line, nbRegionByLine );
+
+
+        // cout << "Thumb  : " << cvSvm.predict( dataMat ) << endl;
+        order = (int)svm.createPredictedData( line, nbRegionByLine );
+        //cout << "Thumb  : " << order << endl;
 
 
 

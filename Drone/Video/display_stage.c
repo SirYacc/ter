@@ -197,7 +197,7 @@ C_RESULT display_stage_transform (display_stage_cfg_t *cfg, vp_api_io_data_t *in
     (void)out;
 
     imgFromKarmen = ipl_image_from_data((uint8_t*)in->buffers[0], 1, 640, 360);
-
+    //cvShowImage("video", imgFromKarmen);
     switch (order) {
     case 0 :
         printf ("Take off\n");
@@ -208,6 +208,7 @@ C_RESULT display_stage_transform (display_stage_cfg_t *cfg, vp_api_io_data_t *in
         //ardrone_tool_set_ui_pad_start( 0 );    // Land
         break;
     default :
+        printf("order = %d\n",order);
         break;
     }
 
@@ -230,9 +231,8 @@ IplImage *ipl_image_from_data(uint8_t* data, int reduced_image, int width, int h
 
   //currframe->widthStep = width * 3;
   currframe->imageData = data;
-  cvCvtColor( currframe, dst, CV_BGR2YCrCb );
+  cvCvtColor( currframe, dst, CV_BGR2RGB );
   cvReleaseImage( &currframe );
-  cvThreshold( dst, dst, 200, 255, CV_THRESH_BINARY );
 
   return dst;
 }

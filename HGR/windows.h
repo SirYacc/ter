@@ -24,7 +24,9 @@ private:
 public:
     Windows();
     int runLearn(string filePath);
-    int runPredict(HGRSVM svm, string file);
+    int runPredictD(HGRSVM svm, string file);
+    int runPredictC(HGRSVM svm, string file);
+
     ~Windows();
 
 };

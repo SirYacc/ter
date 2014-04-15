@@ -49,11 +49,14 @@ void HGRSVM::train( int nbRegionByLine, int nbFrame, int nbRegion ) {
     float labels[nbFrame];
     // fillTables();
 
+    int nbL = 6;
+
     fillTab ( 0, "../res/label0.txt", 0.0, trainingData, labels );
-    fillTab ( nbFrame/5, "../res/label1.txt", 1.0, trainingData, labels );
-    fillTab ( 2*nbFrame/5, "../res/label2.txt", 2.0, trainingData, labels );
-    fillTab ( 3*nbFrame/5, "../res/label3.txt", 3.0, trainingData, labels );
-    fillTab ( 4*nbFrame/5, "../res/labelN.txt", -1.0, trainingData, labels );
+    fillTab ( nbFrame/nbL, "../res/label1.txt", 1.0, trainingData, labels );
+    fillTab ( 2*nbFrame/nbL, "../res/label2.txt", 2.0, trainingData, labels );
+    fillTab ( 3*nbFrame/nbL, "../res/label3.txt", 3.0, trainingData, labels );
+    fillTab ( 4*nbFrame/nbL, "../res/labelN.txt", -1.0, trainingData, labels );
+    fillTab ( 5*nbFrame/nbL, "../res/labelV.txt", -2.0, trainingData, labels );
 
     Mat trainingDataMat(nbFrame, nbRegionByLine*nbRegionByLine, CV_32FC1, trainingData);
     Mat labelsMat(nbFrame, 1, CV_32FC1, labels);
