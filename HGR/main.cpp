@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     //pour apprendre : lancer win.runLearn(), puis svm.train()
 
     HGRSVM svm;
-    // svm.train( 10, 1800, 100 );
+    svm.train( 100 );
     Windows *win = new Windows(argc, argv,svm,"model.txt");
 //    w.setCentralWidget(win);
 //    w.show();

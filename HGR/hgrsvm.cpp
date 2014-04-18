@@ -4,9 +4,98 @@ using namespace cv;
 using namespace std;
 HGRSVM::HGRSVM()
 {
+    totalLine = 0;
 }
 
-void HGRSVM::fillTab ( int nb, string pathFile, float label, float trainingData[][100], float labels[] ) {
+vector<string> & HGRSVM::split( const string &s, char delim, vector<string> &elems ) {
+
+    stringstream ss(s);
+    string item;
+
+    while (getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+
+    return elems;
+}
+
+vector<string> HGRSVM::split( const string &s, char delim ) {
+
+    vector<string> elems;
+    split(s, delim, elems);
+
+    return elems;
+}
+
+void HGRSVM::loadLabels( string resourcesPath, float trainingData[][100], float labels[] ) {
+
+    DIR *dir = opendir( resourcesPath.c_str() );
+
+    if ( dir == NULL )
+    {
+        cout << "Impossible to list directory" << endl;
+        exit(0);
+    }
+    else
+    {
+        struct dirent *ent;
+        vector<string> expFilename;
+        int label;
+
+        while ( (ent = readdir( dir )) != NULL )
+        {
+            string filename (ent->d_name);
+            if (!filename.compare(".") || !filename.compare(".."))
+                continue;
+            expFilename = split( filename, '_' );
+            label = atoi( expFilename.at(1).c_str() );
+            fillTab( resourcesPath + filename, label, trainingData, labels );
+        }
+
+        closedir(dir);
+    }
+}
+
+int HGRSVM::getNbFrame( string resourcesPath ) {
+
+    DIR *dir = opendir( resourcesPath.c_str() );
+    int nbFrame = 0;
+    string filePath;
+    string line;
+
+    if ( dir == NULL )
+    {
+        cout << "Impossible to list directory" << endl;
+        exit(0);
+    }
+    else
+    {
+        struct dirent *ent;
+
+        while ( (ent = readdir( dir )) != NULL )
+        {
+            string filename (ent->d_name);
+            if (!filename.compare(".") || !filename.compare(".."))
+                continue;
+
+            filePath = resourcesPath + filename;
+
+            ifstream fichier( filePath.c_str(), ios::in );
+            if ( !fichier )
+                cout << "fichier inexistant";
+            else {
+                getline( fichier, line );
+                nbFrame += atoi(line.c_str());
+            }
+            fichier.close();
+        }
+        closedir(dir);
+    }
+
+    return nbFrame;
+}
+
+void HGRSVM::fillTab( string pathFile, float label, float trainingData[][100], float labels[] ) {
 
     int nbNewLine = 0;
     ifstream fichier( pathFile.c_str(), ios::in );
@@ -17,46 +106,40 @@ void HGRSVM::fillTab ( int nb, string pathFile, float label, float trainingData[
         cout << "fichier inexistant";
     else
     {
+        getline(fichier, line); // Pour lire le nombre de frame
         while( !fichier.eof() )
         {
             getline(fichier, line);
-            for( unsigned int i = 0 ; i < line.length() ; i++ )
-                trainingData[nb + nbNewLine][i] = line.at(i) - 48;
+            for( unsigned int i = 0 ; i < line.length() ; i++ ) {
+                trainingData[totalLine + nbNewLine][i] = line.at(i) - 48; //Tester avec atoi(line.at(i).c_str)
+            }
             nbNewLine++;
         }
     }
 
-    for( int i = nb ; i < nbNewLine + nb ; i++ )
+    for( int i = totalLine ; i < nbNewLine + totalLine ; i++ )
         labels[i] = label;
+
+    totalLine += nbNewLine - 1;
 
     fichier.close();
 }
 
-
-
-
-
-
-
-
-void HGRSVM::train( int nbRegionByLine, int nbFrame, int nbRegion ) {
+void HGRSVM::train( int nbRegion ) {
 
     (void)nbRegion;
+    int nbRegionByLine = sqrt(nbRegion);
+
 //    float **trainingData = new float*[nbFrame];
 //    for (int i = 0 ; i < nbFrame ; i++)
 //        trainingData[i] = new float[nbRegion];
-     float trainingData[nbFrame][100];
+
+    int nbFrame = getNbFrame( "../res/" );
+
+    float trainingData[nbFrame][100];
     float labels[nbFrame];
-    // fillTables();
 
-    int nbL = 6;
-
-    fillTab ( 0, "../res/label0.txt", 0.0, trainingData, labels );
-    fillTab ( nbFrame/nbL, "../res/label1.txt", 1.0, trainingData, labels );
-    fillTab ( 2*nbFrame/nbL, "../res/label2.txt", 2.0, trainingData, labels );
-    fillTab ( 3*nbFrame/nbL, "../res/label3.txt", 3.0, trainingData, labels );
-    fillTab ( 4*nbFrame/nbL, "../res/labelN.txt", -1.0, trainingData, labels );
-    fillTab ( 5*nbFrame/nbL, "../res/labelV.txt", -2.0, trainingData, labels );
+    loadLabels( "../res/", trainingData, labels );
 
     Mat trainingDataMat(nbFrame, nbRegionByLine*nbRegionByLine, CV_32FC1, trainingData);
     Mat labelsMat(nbFrame, 1, CV_32FC1, labels);

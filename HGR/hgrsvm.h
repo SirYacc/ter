@@ -10,6 +10,9 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <dirent.h>
+#include <regex>
+#include <cmath>
 
 
 using namespace std;
@@ -18,13 +21,21 @@ using namespace cv;
 class HGRSVM
 {
 private :
+    int totalLine;
 public:
     HGRSVM();
 
-    void fillTab ( int nb, string pathFile, float label, float trainingData[][100], float labels[] );
-    void train( int nbRegionByLine, int nbFrame, int nbRegion );
+    void fillTab (string pathFile, float label, float trainingData[][100], float labels[] );
+    void train(int nbRegion );
 
     float createPredictedData( string line, int nbRegionByLine) ;
+
+    void loadLabels(string resourcesPath , float trainingData[][100], float labels[]);
+
+    vector<string> &split(const string &s, char delim, vector<string> &elems);
+    vector<std::string> split(const std::string &s, char delim);
+
+    int getNbFrame( string resourcesPath );
 
      ~HGRSVM();
 
