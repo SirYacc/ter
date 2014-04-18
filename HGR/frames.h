@@ -42,6 +42,43 @@ public:
 
     void printTabOfRegion( bool *tab, int size, int nbCellByLine );
 
+    inline void setYCrCbMin(int Y, int Cr, int Cb){
+        if(Cr < 0)
+            Cr = 0;
+        if(Cr > 255)
+            Cr = 255;
+        if(Cb < 0)
+            Cb = 0;
+        if(Cb > 255)
+            Cb = 255;
+
+
+        Y_MIN = Y;
+        Cr_MIN = Cr;
+        Cb_MIN = Cb;
+
+        cout << Y << " " << Cr << " " << Cb << endl;
+    }
+
+    inline void setYCrCbMax(int Y, int Cr, int Cb){
+
+        if(Cr < 0)
+            Cr = 0;
+        if(Cr > 255)
+            Cr = 255;
+        if(Cb < 0)
+            Cb = 0;
+        if(Cb > 255)
+            Cb = 255;
+
+        Y_MAX = Y;
+        Cr_MAX = Cr;
+        Cb_MAX = Cb;
+
+        cout << Y << " " << Cr << " " << Cb << endl;
+    }
+
+
     ~Frames();
 };
 

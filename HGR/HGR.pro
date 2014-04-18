@@ -1,7 +1,9 @@
+QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+TARGET = HGR
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
-CONFIG -= qt
 
 DEFINES += FFMPEG_SUPPORT
 
@@ -50,7 +52,8 @@ SOURCES += main.cpp                 \
     ../Drone/ardrone_testing_tool.c \
     ../Drone/Video/pre_stage.c      \
     ../Drone/Video/post_stage.c     \
-    ../Drone/Video/display_stage.c
+    ../Drone/Video/display_stage.c \
+    my_roi.cpp
 
 HEADERS += \
     windows.h                       \
@@ -59,7 +62,8 @@ HEADERS += \
     ../Drone/ardrone_testing_tool.h \
     ../Drone/Video/pre_stage.h      \
     ../Drone/Video/post_stage.h     \
-    ../Drone/Video/display_stage.h
+    ../Drone/Video/display_stage.h \
+    my_roi.h
 
 
 unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ardrone_lib/ -lpc_ardrone
