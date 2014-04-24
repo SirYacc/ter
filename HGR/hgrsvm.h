@@ -1,5 +1,6 @@
 #ifndef HGRSVM_H
 #define HGRSVM_H
+
 #include"opencv/cv.h"
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -28,7 +29,7 @@ public:
     void fillTab (string pathFile, float label, float trainingData[][100], float labels[] );
     void train(int nbRegion );
 
-    float createPredictedData( string line, int nbRegionByLine) ;
+    float createPredictedData(CvSVM &cvSvm, string line, int nbRegionByLine) ;
 
     void loadLabels(string resourcesPath , float trainingData[][100], float labels[]);
 

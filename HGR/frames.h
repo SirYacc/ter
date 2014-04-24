@@ -12,7 +12,7 @@ using namespace std;
 
 class Frames
 {
-private:
+public:
     int Y_MIN;
     int Y_MAX;
     int Cr_MIN;
@@ -52,12 +52,11 @@ public:
         if(Cb > 255)
             Cb = 255;
 
-
         Y_MIN = Y;
         Cr_MIN = Cr;
         Cb_MIN = Cb;
 
-        cout << Y << " " << Cr << " " << Cb << endl;
+        //cout << Y << " " << Cr << " " << Cb << endl;
     }
 
     inline void setYCrCbMax(int Y, int Cr, int Cb){
@@ -75,7 +74,7 @@ public:
         Cr_MAX = Cr;
         Cb_MAX = Cb;
 
-        cout << Y << " " << Cr << " " << Cb << endl;
+        //cout << Y << " " << Cr << " " << Cb << endl;
     }
 
 

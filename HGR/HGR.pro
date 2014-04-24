@@ -46,24 +46,46 @@ LIBS += `pkg-config --libs opencv gtk+-2.0 glib-2.0` \
         -pthread
 
 SOURCES += main.cpp                 \
-    windows.cpp                     \
     hgrsvm.cpp                      \
     frames.cpp                      \
     ../Drone/ardrone_testing_tool.c \
     ../Drone/Video/pre_stage.c      \
     ../Drone/Video/post_stage.c     \
     ../Drone/Video/display_stage.c \
-    my_roi.cpp
+    my_roi.cpp \
+    windowcontext.cpp \
+    WindowStates/defaultwindowstate.cpp \
+    WindowStates/calibratewindowstate1.cpp \
+    WindowStates/calibratewindowstate0.cpp \
+    WindowStates/binarywindowstate.cpp \
+    WindowStates/abstractwindowstate.cpp \
+    WindowStates/learnwindowstate.cpp \
+    Windows/webcamwindow.cpp \
+    Windows/mymainwindow.cpp \
+    Windows/abstractwindow.cpp \
+    Windows/dronewindow.cpp \
+    WindowStates/predictwindowstate.cpp
 
 HEADERS += \
-    windows.h                       \
     hgrsvm.h                        \
     frames.h                        \
     ../Drone/ardrone_testing_tool.h \
     ../Drone/Video/pre_stage.h      \
     ../Drone/Video/post_stage.h     \
     ../Drone/Video/display_stage.h \
-    my_roi.h
+    my_roi.h \
+    windowcontext.h \
+    WindowStates/defaultwindowstate.h \
+    WindowStates/calibratewindowstate1.h \
+    WindowStates/calibratewindowstate0.h \
+    WindowStates/binarywindowstate.h \
+    WindowStates/abstractwindowstate.h \
+    WindowStates/learnwindowstate.h \
+    Windows/webcamwindow.h \
+    Windows/mymainwindow.h \
+    Windows/abstractwindow.h \
+    Windows/dronewindow.h \
+    WindowStates/predictwindowstate.h
 
 
 unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ardrone_lib/ -lpc_ardrone
