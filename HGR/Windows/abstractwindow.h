@@ -5,6 +5,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QSlider>
+#include <QGroupBox>
 #include "opencv/cv.h"
 #include "opencv2/opencv.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -37,10 +39,19 @@ protected:
 
     QLabel* _mainLabel;
     QLabel* _secondaryLabel;
+
     QPushButton* buttonRP;
     QPushButton* buttonRL;
     QPushButton* buttonC;
     QPushButton* buttonLand;
+    VideoCapture capture;
+
+    QSlider *yMinSlider;
+    QSlider *yMaxSlider;
+    QSlider *CrMinSlider;
+    QSlider *CrMaxSlider;
+    QSlider *CbMinSlider;
+    QSlider *CbMaxSlider;
     QPushButton* buttonCam;
 
 public:
@@ -64,6 +75,44 @@ protected slots:
     void setModeL();
     void setLanding();
     void onChangeCameraFeedClicked();
+
+    //TODO enlever le inline ?
+    inline void setYMin(int v){
+        if(frames.getYMax() >= v)
+            frames.setYMin(v);
+        else
+            yMinSlider->setValue(frames.getYMin());
+    }
+    inline void setYMax(int v){
+        if(frames.getYMin() <= v)
+            frames.setYMax(v);
+        else
+            yMaxSlider->setValue(frames.getYMax());
+    }
+    inline void setCrMin(int v){
+        if(frames.getCrMax() >= v)
+           frames.setCrMin(v);
+        else
+            CrMinSlider->setValue(frames.getCrMin());
+    }
+    inline void setCrMax(int v){
+        if(frames.getCrMin() <= v)
+            frames.setCrMax(v);
+        else
+            CrMaxSlider->setValue(frames.getCrMax());
+    }
+    inline void setCbMin(int v){
+        if(frames.getCbMax() >= v)
+           frames.setCbMin(v);
+        else
+            CbMinSlider->setValue(frames.getCbMin());
+    }
+    inline void setCbMax(int v){
+        if(frames.getCbMin() <= v)
+            frames.setCbMax(v);
+        else
+            CbMaxSlider->setValue(frames.getCbMax());
+    }
 };
 
 #endif // ABSTRACTWINDOW_H

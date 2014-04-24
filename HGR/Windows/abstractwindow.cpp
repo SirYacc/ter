@@ -7,14 +7,43 @@ AbstractWindow::AbstractWindow(string model, QWidget *parent )
     _mainLabel = new QLabel();
     _secondaryLabel = new QLabel();
 
+    int YcbCr[6];
+    frames.getYCbCr(YcbCr);
+
     setMainLabel();
     setSecondaryLabel();
 
-    QGridLayout *gLayout = new QGridLayout;
-    QVBoxLayout *bLayout = new QVBoxLayout;
+    QGridLayout *gLayout = new QGridLayout();
+    QVBoxLayout *rightLayout = new QVBoxLayout();
+    QGridLayout *leftLayout = new QGridLayout();
+    QGridLayout *oLayout = new QGridLayout();
+    QVBoxLayout *yLayout = new QVBoxLayout();
+    QVBoxLayout *cbLayout = new QVBoxLayout();
+    QVBoxLayout *crLayout = new QVBoxLayout();
 
-    gLayout->addWidget(_mainLabel,0,0,Qt::AlignTop);
-    bLayout->addWidget(_secondaryLabel);
+
+    QGridLayout *sLayout = new QGridLayout();
+
+    QString stlyeSheetBox = "QGroupBox{border: 1px solid gray; margin-top: 25px;}QGroupBox::title {subcontrol-origin: margin;subcontrol-position: top left;}";
+    QGroupBox *yBox = new QGroupBox();
+    yBox->setTitle("Y min/max");
+    yBox->setStyleSheet(stlyeSheetBox);
+
+
+    QGroupBox *cbBox = new QGroupBox();
+    cbBox->setTitle("Cb min/max");
+    cbBox->setStyleSheet( "QGroupBox{border: 1px solid gray;}");
+    cbBox->setStyleSheet(stlyeSheetBox);
+
+    QGroupBox *crBox = new QGroupBox();
+    crBox->setTitle("Cr min/max");
+    crBox->setStyleSheet( "QGroupBox{border: 1px solid gray;}");
+    crBox->setStyleSheet(stlyeSheetBox);
+
+
+    leftLayout->addWidget(_mainLabel,0,0,Qt::AlignTop);
+    rightLayout->addWidget(_secondaryLabel);
+
 
     buttonRP = new QPushButton();
     buttonRP->setText("Run predict");
@@ -26,10 +55,12 @@ AbstractWindow::AbstractWindow(string model, QWidget *parent )
     buttonRL->setFixedWidth(300);
     buttonRL->connect(buttonRL, SIGNAL(released()), this, SLOT(setModeL()));
 
+
     buttonC = new QPushButton();
-    buttonC->setText("Calibrate");
+    buttonC->setText("Run calibrage");
     buttonC->setFixedWidth(300);
     buttonC->connect(buttonC, SIGNAL(released()), this, SLOT(setModeC0()));
+
 
     buttonLand = new QPushButton();
     buttonLand->setText("Landing");
@@ -41,13 +72,94 @@ AbstractWindow::AbstractWindow(string model, QWidget *parent )
     buttonCam->setFixedWidth(300);
     buttonCam->connect(buttonCam, SIGNAL(released()), this, SLOT(onChangeCameraFeedClicked()));
 
-    bLayout->addWidget(buttonRP);
-    bLayout->addWidget(buttonRL);
-    bLayout->addWidget(buttonC);
-    bLayout->addWidget(buttonLand);
-    bLayout->addWidget(buttonCam);
+    rightLayout->addWidget(buttonRP);
+    rightLayout->addWidget(buttonRL);
+    rightLayout->addWidget(buttonC);
+    rightLayout->addWidget(buttonLand);
+    rightLayout->addWidget(buttonCam);
 
-    gLayout->addLayout(bLayout,0,1,Qt::AlignTop|Qt::AlignLeft);
+
+    yMinSlider = new QSlider(Qt::Horizontal);
+    yMinSlider->setOrientation(Qt::Horizontal);
+    yMinSlider->setFixedWidth(150);
+    yMinSlider->setMaximum(255);
+    yMinSlider->setMinimum(0);
+    yMinSlider->setValue(YcbCr[0]);
+    yMinSlider->connect(yMinSlider, SIGNAL(valueChanged(int)),
+             this, SLOT(setYMin(int)));
+
+    yMaxSlider = new QSlider(Qt::Horizontal);
+    yMaxSlider->setOrientation(Qt::Horizontal);
+    yMaxSlider->setFixedWidth(150);
+    yMaxSlider->setMaximum(255);
+    yMaxSlider->setMinimum(0);
+    yMaxSlider->setValue(YcbCr[1]);
+    yMaxSlider->connect(yMaxSlider, SIGNAL(valueChanged(int)),
+             this, SLOT(setYMax(int)));
+
+    yLayout->addWidget(yMinSlider);
+    yLayout->addWidget(yMaxSlider);
+    yBox->setLayout(yLayout);
+
+
+    CrMinSlider = new QSlider(Qt::Horizontal);
+    CrMinSlider->setOrientation(Qt::Horizontal);
+    CrMinSlider->setFixedWidth(150);
+    CrMinSlider->setMaximum(255);
+    CrMinSlider->setMinimum(0);
+    CrMinSlider->setValue(YcbCr[2]);
+    CrMinSlider->connect(CrMinSlider, SIGNAL(valueChanged(int)),
+             this, SLOT(setCrMin(int)));
+
+    CrMaxSlider = new QSlider(Qt::Horizontal);
+    CrMaxSlider->setOrientation(Qt::Horizontal);
+    CrMaxSlider->setFixedWidth(150);
+    CrMaxSlider->setMaximum(255);
+    CrMaxSlider->setMinimum(0);
+    CrMaxSlider->setValue(YcbCr[3]);
+    CrMaxSlider->connect(CrMaxSlider, SIGNAL(valueChanged(int)),
+             this, SLOT(setCrMax(int)));
+
+    crLayout->addWidget(CrMinSlider);
+    crLayout->addWidget(CrMaxSlider);
+    crBox->setLayout(crLayout);
+
+
+    CbMinSlider = new QSlider(Qt::Horizontal);
+    CbMinSlider->setOrientation(Qt::Horizontal);
+    CbMinSlider->setFixedWidth(150);
+    CbMinSlider->setMaximum(255);
+    CbMinSlider->setMinimum(0);
+    CbMinSlider->setValue(YcbCr[4]);
+    CbMinSlider->connect(CbMinSlider, SIGNAL(valueChanged(int)),
+             this, SLOT(setCbMin(int)));
+
+    CbMaxSlider = new QSlider(Qt::Horizontal);
+    CbMaxSlider->setOrientation(Qt::Horizontal);
+    CbMaxSlider->setFixedWidth(150);
+    CbMaxSlider->setMaximum(255);
+    CbMaxSlider->setMinimum(0);
+    CbMaxSlider->setValue(YcbCr[5]);
+    CbMaxSlider->connect(CbMaxSlider, SIGNAL(valueChanged(int)),
+             this, SLOT(setCbMax(int)));
+
+    cbLayout->addWidget(CbMinSlider);
+    cbLayout->addWidget(CbMaxSlider);
+    cbBox->setLayout(cbLayout);
+
+    sLayout->addWidget(yBox,0,0);
+    sLayout->addWidget(crBox,0,1);
+    sLayout->addWidget(cbBox,0,2);
+
+    QLabel *batterie = new QLabel("Batterie : 0%");
+
+    oLayout->addWidget(batterie,0,0,Qt::AlignTop|Qt::AlignLeft);
+    oLayout->addLayout(sLayout,0,1,Qt::AlignRight);
+    sLayout->setMargin(25);
+    leftLayout->addLayout(oLayout,1,0,Qt::AlignLeft);
+
+    gLayout->addLayout(leftLayout,0,0,Qt::AlignTop);
+    gLayout->addLayout(rightLayout,0,1,Qt::AlignTop|Qt::AlignLeft);
 
     setLayout(gLayout);
 }
@@ -144,6 +256,15 @@ void AbstractWindow::setModeC1() {
     buttonC->setText( "Calibrate" );
     buttonC->connect(buttonC, SIGNAL(released()), this, SLOT(setModeC0()));
     context->setState( new CalibrateWindowState1( cameraFeed, frames ) );
+
+    yMinSlider->setValue(frames.getYMin());
+    yMaxSlider->setValue(frames.getYMax());
+
+    CrMinSlider->setValue(frames.getCrMin());
+    CrMaxSlider->setValue(frames.getCrMax());
+
+    CbMinSlider->setValue(frames.getCbMin());
+    CbMaxSlider->setValue(frames.getCbMax());
 }
 
 void AbstractWindow::inCalibrateMode( bool mode ) {

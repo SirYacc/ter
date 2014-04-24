@@ -77,6 +77,62 @@ public:
         //cout << Y << " " << Cr << " " << Cb << endl;
     }
 
+    inline void getYCbCr(int *tab){
+        tab[0] = Y_MIN;
+        tab[1] = Y_MAX;
+        tab[2] = Cr_MIN;
+        tab[3] = Cr_MAX;
+        tab[4] = Cb_MIN;
+        tab[5] = Cb_MAX;
+    }
+
+    inline void setYMin(int v){
+        Y_MIN = v;
+    }
+
+    inline void setYMax(int v){
+        Y_MAX = v;
+    }
+
+    inline void setCrMin(int v){
+        Cr_MIN = v;
+    }
+
+    inline void setCrMax(int v){
+        Cr_MAX = v;
+    }
+
+    inline void setCbMin(int v){
+        Cb_MIN = v;
+    }
+
+    inline void setCbMax(int v){
+        Cb_MAX = v;
+    }
+
+    inline int getYMin(){
+        return Y_MIN;
+    }
+
+    inline int getYMax(){
+        return Y_MAX;
+    }
+
+    inline int getCrMin(){
+        return Cr_MIN;
+    }
+
+    inline int getCrMax(){
+        return Cr_MAX;
+    }
+
+    inline int getCbMin(){
+        return Cb_MIN;
+    }
+
+    inline int getCbMax(){
+        return Cb_MAX;
+    }
 
     ~Frames();
 };
