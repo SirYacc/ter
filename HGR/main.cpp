@@ -39,7 +39,7 @@ int main( int argc, char *argv[] )
 
     int status = a.exec();
 
-    order = 0;
+    order = 1;
 
     th1.join();
 

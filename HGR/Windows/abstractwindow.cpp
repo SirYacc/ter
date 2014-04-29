@@ -283,7 +283,7 @@ void AbstractWindow::setModeL() {
 }
 
 void AbstractWindow::setLanding() {
-    order = 0;
+    order = 1;
     inFlightMode( false );
     context->setState( new DefaultWindowState() );
 }

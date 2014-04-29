@@ -22,7 +22,7 @@ void DroneWindow::run() {
         cameraFeed = Mat( imgFromKarmen );
         context->execute( cameraFeed );
     }
-    order = 0;
+    order = 1;
 }
 
 void DroneWindow::waitForDroneVideoStream( void ) {

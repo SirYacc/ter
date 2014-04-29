@@ -201,31 +201,31 @@ C_RESULT display_stage_transform (display_stage_cfg_t *cfg, vp_api_io_data_t *in
     switch (order) {
     case 0 :
         printf ("Take off\n");
-        ardrone_tool_set_ui_pad_start( 1 );    // Take-off
+//        ardrone_tool_set_ui_pad_start( 1 );    // Take-off
         break;
     case 1 :
         printf ("Land\n");
-        ardrone_tool_set_ui_pad_start( 0 );    // Land
+//        ardrone_tool_set_ui_pad_start( 0 );    // Land
         break;
     case 2 :
         printf("Left\n");
-        ardrone_tool_set_progressive_cmd(FALSE,
-                                         -10.0
-                                         ,0.0
-                                         ,10.0
-                                         ,0.0
-                                         ,0.0
-                                         ,0.0);
+//        ardrone_tool_set_progressive_cmd(FALSE,
+//                                         -10.0
+//                                         ,0.0
+//                                         ,10.0
+//                                         ,0.0
+//                                         ,0.0
+//                                         ,0.0);
         break;
     case 3 :
         printf("Right\n");
-        ardrone_tool_set_progressive_cmd(FALSE,
-                                         10.0
-                                         ,0.0
-                                         ,-10.0
-                                         ,0.0
-                                         ,0.0
-                                         ,0.0);
+//        ardrone_tool_set_progressive_cmd(FALSE,
+//                                         10.0
+//                                         ,0.0
+//                                         ,-10.0
+//                                         ,0.0
+//                                         ,0.0
+//                                         ,0.0);
         break;
     default :
         printf("order = %d\n",order);

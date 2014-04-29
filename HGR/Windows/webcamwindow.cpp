@@ -17,5 +17,5 @@ void WebcamWindow::run() {
         capture.read( cameraFeed );
         context->execute( cameraFeed );
     }
-    order = 0;
+    order = 1;
 }
