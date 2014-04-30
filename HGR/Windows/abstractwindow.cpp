@@ -288,6 +288,6 @@ void AbstractWindow::setLanding() {
     context->setState( new DefaultWindowState() );
 }
 
-void AbstractWindow::onChangeCameraFeedClicked() {
+void AbstractWindow::onChangeCameraFeedClicked(){
     ihm = false;
 }

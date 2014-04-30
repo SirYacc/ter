@@ -127,6 +127,7 @@ C_RESULT ardrone_tool_init_custom (void)
      */
     ardrone_application_default_config.navdata_demo = TRUE;
     ardrone_application_default_config.navdata_options = (NAVDATA_OPTION_MASK(NAVDATA_DEMO_TAG) | NAVDATA_OPTION_MASK(NAVDATA_VISION_DETECT_TAG) | NAVDATA_OPTION_MASK(NAVDATA_GAMES_TAG) | NAVDATA_OPTION_MASK(NAVDATA_MAGNETO_TAG) | NAVDATA_OPTION_MASK(NAVDATA_HDVIDEO_STREAM_TAG) | NAVDATA_OPTION_MASK(NAVDATA_WIFI_TAG));
+   // ardrone_application_default_config.navdata_options = NAVDATA_OPTION_FULL_MASK;
     if (IS_ARDRONE2)
     {
         ardrone_application_default_config.video_codec = drone2Codec;

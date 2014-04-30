@@ -20,7 +20,7 @@ int main( int argc, char *argv[] )
 
     QMainWindow mainWindow;
 
-    HGRSVM svm;
+    HGRSVM svm = HGRSVM();
     svm.train( 100 );
 
     QStackedWidget *stackedWidget = new QStackedWidget;
