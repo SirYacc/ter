@@ -3,19 +3,23 @@
 #include <QMainWindow>
 #include <QStackedWidget>
 #include <QApplication>
-
+#include "cvdrone/src/ardrone/ardrone.h"
 #include "hgrsvm.h"
 #include "Windows/mymainwindow.h"
-#include "../Drone/ardrone_testing_tool.h"
 
+int runArdrone();
 using namespace std;
 using namespace cv;
 
 int order = -1;
 IplImage *imgFromKarmen;
+bool newOrder = false;
+int battery = 0;
+QString orderName;
 
 int main( int argc, char *argv[] )
 {
+
     QApplication a( argc, argv );
 
     QMainWindow mainWindow;
@@ -35,13 +39,15 @@ int main( int argc, char *argv[] )
     mainWindow.resize(950, 500);
     mainWindow.show();
 
-    thread th1( runArdrone, argc, argv );
+    thread th1( runArdrone );
+
 
     int status = a.exec();
 
-    order = 1;
 
-    th1.join();
+
+    order = 1;
+ th1.join();
 
     return status;
 }

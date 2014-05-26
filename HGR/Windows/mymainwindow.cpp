@@ -3,7 +3,6 @@
 MyMainWindow::MyMainWindow(QStackedWidget *stackedWidget, QWidget *parent)
     : QWidget( parent ),
       stackedWidget( stackedWidget )
-
 {
     QGridLayout *gLayout = new QGridLayout();
 
@@ -24,21 +23,21 @@ MyMainWindow::MyMainWindow(QStackedWidget *stackedWidget, QWidget *parent)
 
     setLayout( gLayout );
 
-    webcamWin = new WebcamWindow( "model.txt" );
-    stackedWidget->addWidget( webcamWin );
+    window = new MyWindow( "model.txt" );
+    stackedWidget->addWidget( window );
 
-    droneWin = new DroneWindow( "model.txt" );
-    stackedWidget->addWidget( droneWin );
+    webcamStrategy = new WebcamStrategy();
+    droneStrategy = new DroneStrategy();
 }
 
 void MyMainWindow::setModeDrone() {
-    stackedWidget->setCurrentWidget( droneWin );
-    droneWin->run();
+    stackedWidget->setCurrentWidget( window );
+    window->run( droneStrategy );
     stackedWidget->setCurrentWidget( this );
 }
 
 void MyMainWindow::setModeWebcam() {
-    stackedWidget->setCurrentWidget( webcamWin );
-    webcamWin->run();
+    stackedWidget->setCurrentWidget( window );
+    window->run( webcamStrategy );
     stackedWidget->setCurrentWidget( this );
 }

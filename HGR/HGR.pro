@@ -23,35 +23,37 @@ INCLUDEPATH += /usr/local/include/opencv            \
                /usr/lib/x86_64-linux-gnu/gtk-2.0/include \
                /usr/include/gdk-pixbuf-2.0 \
                /usr/lib/x86_64-linux-gnu/glib-2.0/include \
-               ../ARDroneLib/                       \
-               ../ARDroneLib/Soft/Lib/              \
-               ../ARDroneLib/Soft/Lib/ardrone_tool/ \
-               ../ARDroneLib/Soft/Common/           \
-               ../ARDroneLib/VP_SDK/                \
-               ../ARDroneLib/VP_SDK/VP_Os/linux/    \
-               ../ARDroneLib/FFMPEG/Includes/
-
-
 
 QMAKE_CXXFLAGS += \
             -pthread    \
             -D_REENTRANT\
             -D__LINUX__ \
-            -std=c++0x
+            -std=c++0x \
+            -D__STDC_CONSTANT_MACROS
 
 
 LIBS += `pkg-config --libs opencv gtk+-2.0 glib-2.0` \
-        -lpc_ardrone                        \
-        -lrt                                \
-        -pthread
+                -lm                     \
+                -lpthread               \
+                -lavutil                \
+                -lavformat              \
+                -lavcodec               \
+                -lswscale               \
+                -lopencv_core           \
+                -lopencv_imgproc        \
+                -lopencv_highgui
 
 SOURCES += main.cpp                 \
     hgrsvm.cpp                      \
     frames.cpp                      \
-    ../Drone/ardrone_testing_tool.c \
-    ../Drone/Video/pre_stage.c      \
-    ../Drone/Video/post_stage.c     \
-    ../Drone/Video/display_stage.c \
+    cvdrone/src/ardrone/ardrone.cpp                 \
+    cvdrone/src/ardrone/command.cpp                 \
+    cvdrone/src/ardrone/config.cpp                 \
+    cvdrone/src/ardrone/navdata.cpp                 \
+    cvdrone/src/ardrone/tcp.cpp                 \
+    cvdrone/src/ardrone/udp.cpp                 \
+    cvdrone/src/ardrone/version.cpp                 \
+    cvdrone/src/ardrone/video.cpp                 \
     my_roi.cpp \
     windowcontext.cpp \
     WindowStates/defaultwindowstate.cpp \
@@ -60,19 +62,19 @@ SOURCES += main.cpp                 \
     WindowStates/binarywindowstate.cpp \
     WindowStates/abstractwindowstate.cpp \
     WindowStates/learnwindowstate.cpp \
-    Windows/webcamwindow.cpp \
     Windows/mymainwindow.cpp \
-    Windows/abstractwindow.cpp \
-    Windows/dronewindow.cpp \
-    WindowStates/predictwindowstate.cpp
+    WindowStates/predictwindowstate.cpp \
+    cvdrone/src/ardrone/mainArdrone.cpp \
+    Strategy/dronestrategy.cpp \
+    Strategy/webcamstrategy.cpp \
+    Strategy/videostreamstrategy.cpp \
+    Windows/mywindow.cpp
 
 HEADERS += \
     hgrsvm.h                        \
     frames.h                        \
-    ../Drone/ardrone_testing_tool.h \
-    ../Drone/Video/pre_stage.h      \
-    ../Drone/Video/post_stage.h     \
-    ../Drone/Video/display_stage.h \
+     cvdrone/src/ardrone/ardrone.h \
+     cvdrone/src/ardrone/uvlc.h\
     my_roi.h \
     windowcontext.h \
     WindowStates/defaultwindowstate.h \
@@ -81,72 +83,9 @@ HEADERS += \
     WindowStates/binarywindowstate.h \
     WindowStates/abstractwindowstate.h \
     WindowStates/learnwindowstate.h \
-    Windows/webcamwindow.h \
     Windows/mymainwindow.h \
-    Windows/abstractwindow.h \
-    Windows/dronewindow.h \
-    WindowStates/predictwindowstate.h
-
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ardrone_lib/ -lpc_ardrone
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ardrone_lib
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ardrone_lib
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ardrone_lib/libpc_ardrone.a
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/sdk/ -lsdk
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/sdk
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/sdk
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/sdk/libsdk.a
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/vlib/ -lvlib
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/vlib
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/vlib
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/vlib/libvlib.a
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/ -lavcodec
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/libavcodec.a
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/ -lavdevice
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/libavdevice.a
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/ -lavfilter
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/libavfilter.a
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/ -lavformat
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/libavformat.a
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/ -lavutil
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/libavutil.a
-
-unix:!macx: LIBS += -L$$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/ -lswscale
-
-INCLUDEPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-DEPENDPATH += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static
-
-unix:!macx: PRE_TARGETDEPS += $$PWD/../ARDroneLib/Soft/Build/targets_versions/ffmpeg_static/libswscale.a
+    WindowStates/predictwindowstate.h \
+    Strategy/dronestrategy.h \
+    Strategy/webcamstrategy.h \
+    Strategy/videostreamstrategy.h \
+    Windows/mywindow.h

@@ -1,6 +1,6 @@
 #include "defaultwindowstate.h"
 #include "windowcontext.h"
-#include "Windows/abstractwindow.h"
+#include "Windows/mywindow.h"
 
 DefaultWindowState::DefaultWindowState( void )
     : AbstractWindowState ()
@@ -12,6 +12,7 @@ void DefaultWindowState::execute(WindowContext &context , Mat &cameraFeed) {
 
     context.getWindow()->setMainMat( cameraFeed );
     context.getWindow()->setSecondaryMat( blackSq );
+    context.getWindow()->setInfoLabel();
     context.getWindow()->show();
 
     waitKey(10);

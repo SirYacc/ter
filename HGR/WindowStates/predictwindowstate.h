@@ -10,6 +10,7 @@
 #include "hgrsvm.h"
 
 extern int order;
+extern bool newOrder;
 
 using namespace cv;
 

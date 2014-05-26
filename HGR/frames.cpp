@@ -51,20 +51,6 @@ Mat Frames::getSkin( Mat input ) {
     return skin;
 }
 
-int Frames::findBiggestContour( vector< vector< Point > > contours ){
-
-    int indexOfBiggestContour = -1;
-    unsigned int sizeOfBiggestContour = 0;
-
-    for (unsigned int i = 0; i < contours.size(); i++){
-        if(contours[i].size() > sizeOfBiggestContour){
-            sizeOfBiggestContour = contours[i].size();
-            indexOfBiggestContour = i;
-        }
-    }
-
-    return indexOfBiggestContour;
-}
 
 Rect Frames::getBoundingRectOfBiggestContour( Mat input ) {
 

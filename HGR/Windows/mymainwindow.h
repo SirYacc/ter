@@ -6,9 +6,10 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include "abstractwindow.h"
-#include "webcamwindow.h"
-#include "dronewindow.h"
+#include "Strategy/videostreamstrategy.h"
+#include "Strategy/webcamstrategy.h"
+#include "Strategy/dronestrategy.h"
+#include "mywindow.h"
 
 class MyMainWindow : public QWidget
 {
@@ -19,8 +20,9 @@ private:
     QPushButton *droneButton;
     QPushButton *webcamButton;
 
-    AbstractWindow *webcamWin;
-    AbstractWindow *droneWin;
+    MyWindow *window;
+    WebcamStrategy *webcamStrategy;
+    DroneStrategy *droneStrategy;
 
 public:
     MyMainWindow( QStackedWidget *stackedWidget, QWidget *parent = 0 );

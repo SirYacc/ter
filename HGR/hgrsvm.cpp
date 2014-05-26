@@ -165,7 +165,7 @@ void HGRSVM::train( int nbRegion ) {
     SVM.save( "model.txt" );
 }
 
-float HGRSVM::createPredictedData( CvSVM &cvSvm, string line, int nbRegionByLine) {
+float HGRSVM::HGRPredict( CvSVM &cvSvm, string line, int nbRegionByLine) {
 
     //CvSVM cvSvm;
     //cout << "Before load model" << endl;

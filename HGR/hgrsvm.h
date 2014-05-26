@@ -29,7 +29,7 @@ public:
     void fillTab (string pathFile, float label, float trainingData[][100], float labels[] );
     void train(int nbRegion );
 
-    float createPredictedData(CvSVM &cvSvm, string line, int nbRegionByLine) ;
+    float HGRPredict(CvSVM &cvSvm, string line, int nbRegionByLine) ;
 
     void loadLabels(string resourcesPath , float trainingData[][100], float labels[]);
 

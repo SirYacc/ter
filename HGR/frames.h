@@ -28,8 +28,6 @@ public:
 
     Mat getSkin( Mat input );
 
-    int findBiggestContour( vector< vector< Point > > contours );
-
     Rect getBoundingRectOfBiggestContour(Mat input );
 
     void resizeRect( Rect *rect );

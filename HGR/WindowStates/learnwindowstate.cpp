@@ -1,6 +1,6 @@
 #include "learnwindowstate.h"
 #include "windowcontext.h"
-#include "Windows/abstractwindow.h"
+#include "Windows/mywindow.h"
 
 LearnWindowState::LearnWindowState( string filePath, Frames frames )
     : //file( filePath.c_str(), ios::out | ios::trunc ),
@@ -28,7 +28,7 @@ void LearnWindowState::execute( WindowContext &context , Mat &cameraFeed ) {
     skinMat = frames.getSkin( cameraFeed );
     fullHand = frames.getFullHand( skinMat );
 
-    if(starter >= 10){
+    if(starter >= 50){
         if(cptFrames == 10){
             file  << frames.getFormatedSVM(fullHand,nbRegionByLine) << endl;
             cptFrames = 0;
@@ -36,13 +36,14 @@ void LearnWindowState::execute( WindowContext &context , Mat &cameraFeed ) {
         }
         else cptFrames++;
     }
-    else cout << " " << starter++;
+    else cout << " " << starter++ << endl;
 
-    if( nbImg >= 10 )
+    if( nbImg >= 110 )
         context.setState( new DefaultWindowState() );
 
     context.getWindow()->setMainMat( skinMat );
     context.getWindow()->setSecondaryMat( fullHand );
+    context.getWindow()->setInfoLabel();
     context.getWindow()->show();
 
     waitKey(10);

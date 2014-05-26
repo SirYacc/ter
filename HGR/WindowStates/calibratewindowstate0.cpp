@@ -1,6 +1,6 @@
 #include "calibratewindowstate0.h"
 #include "windowcontext.h"
-#include "Windows/abstractwindow.h"
+#include "Windows/mywindow.h"
 
 CalibrateWindowState0::CalibrateWindowState0( Mat cameraFeed )
     : blackSq( Mat::zeros( Size( 300, 300 ), CV_8UC1 ))
@@ -39,6 +39,7 @@ void CalibrateWindowState0::execute(WindowContext &context , Mat &cameraFeed) {
 
     context.getWindow()->setMainMat( cameraFeed );
     context.getWindow()->setSecondaryMat( blackSq );
+    context.getWindow()->setInfoLabel();
     context.getWindow()->show();
 
     waitKey( 0 );
